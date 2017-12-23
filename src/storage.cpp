@@ -9,51 +9,52 @@ Storage::Storage(int block_size) {
 
 Storage::~Storage() {
     cout << "Storage destructed" << endl;
-    this->m_storage_file->close();
-    delete this->m_storage_file;
+    fclose(this->m_storage);
 }
 
 bool Storage::open(string path) {
-    cout << "Opening " << path << endl;
     this->m_storage_file_path = path;
+    this->m_storage = fopen(path.c_str(), "a+");
 
-    this->m_storage_file = new fstream();
-    this->m_storage_file->open(this->m_storage_file_path.c_str(), std::fstream::out);
-    this->m_storage_file->close();
-    this->m_storage_file->open(this->m_storage_file_path.c_str(), std::fstream::in | std::fstream::out | std::fstream::binary);
-
-    return true;
+    if (!this->m_storage)
+        return false;
+    else
+        return true;
 }
 
 long Storage::writeBlock(const char *buffer) {
-    // rewind to the end of file
     long size = this->getSize();
-    this->m_storage_file->seekp(size);
+    fseek(this->m_storage, size, SEEK_SET);
 
-    // write to the end
-    long position = getSize();
-    this->m_storage_file->write(buffer, this->m_block_size);
-    return position;
+    int wrote = fwrite(buffer, 1, this->m_block_size, this->m_storage);
+    cout << "Wrote " << wrote << " bytes to storage" << endl;
+
+    if (wrote < 0)
+        return -1;
+    else
+        return size;
 }
 
-void Storage::rewriteBlock(long position, const char *buffer) {
-    this->m_storage_file->seekp(position);
+bool Storage::rewriteBlock(long position, const char *buffer) {
+    fseek(this->m_storage, position, SEEK_SET);
 
-    // write to specified position
-    this->m_storage_file->write(buffer, this->m_block_size);
+    int wrote = fwrite(buffer, 1, this->m_block_size, this->m_storage);
+
+    if (wrote < 0)
+        return false;
+    else
+        return true;
 }
 
 bool Storage::readBlock(long position, char *buffer) {
-    if (sizeof(buffer) != this->m_block_size) {
+    fseek(this->m_storage, position, SEEK_SET);
+
+    int read = fread(buffer, 1, this->m_block_size, this->m_storage);
+
+    if (read < 0)
         return false;
-    }
-    else {
-        long size = this->getSize();
-        this->m_storage_file->seekp(position);
-        this->m_storage_file->read(buffer, this->m_block_size);
-        this->m_storage_file->seekp(size);
+    else
         return true;
-    }
 }
 
 long Storage::getSize() {
