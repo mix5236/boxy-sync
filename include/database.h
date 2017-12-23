@@ -30,7 +30,7 @@ public:
      * \param path - Path to database (relative or absoulte)
      * \return - Returns true on successful open, false if any errors occoured
      */
-    bool openDatabase(const char *path);
+    bool open(const char *path);
     /*!
      * \brief prepareQuery - Creates query statement for further processing
      * \param query - SQLite query (use '?' for parameters that will be bound by bindToQuery)

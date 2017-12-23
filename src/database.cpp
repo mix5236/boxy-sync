@@ -9,7 +9,7 @@ Database::~Database() {
     sqlite3_close(database);
 }
 
-bool Database::openDatabase(const char *path) {
+bool Database::open(const char *path) {
     int stat = sqlite3_open(path, &this->database);
 
     if (stat == SQLITE_OK) {
