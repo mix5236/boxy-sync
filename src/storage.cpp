@@ -27,7 +27,6 @@ long Storage::writeBlock(const char *buffer) {
     fseek(this->m_storage, size, SEEK_SET);
 
     int wrote = fwrite(buffer, 1, this->m_block_size, this->m_storage);
-    cout << "Wrote " << wrote << " bytes to storage" << endl;
 
     if (wrote < 0)
         return -1;

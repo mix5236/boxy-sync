@@ -1,4 +1,4 @@
-#include "boxysynccore.h"
+#include "include/boxysynccore.h"
 
 BoxySyncCore::BoxySyncCore() {
 
