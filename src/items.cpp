@@ -32,7 +32,7 @@ bool Items::add(Item item) {
 
     db->executeQuery();
 
-    int result = std::stoi(db->getQueryResultPlain(0));
+    int result = db->getQueryResultInt(0);
 
     // 3. set that ID = rowid - 1
     db->prepareQuery("UPDATE ITEMS SET ID=? WHERE NAME=? AND PATH=?;");
@@ -78,15 +78,7 @@ Item Items::get(string name, string path) {
         item.size = -1;
     }
 
-    temp = db->getQueryResultPlain(0);
-
-    try {
-        item.id = stoi(temp);
-    }
-    catch (std::exception &ex) {
-        // cout << ex.what() << endl;
-        item.id = -1;
-    }
+    item.id = db->getQueryResultInt(0);
 
     return item;
 }

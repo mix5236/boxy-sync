@@ -111,16 +111,18 @@ string Database::getQueryResult(int column) {
     }
 }
 
-string Database::getQueryResultPlain(int column) {
+int Database::getQueryResultInt(int column) {
     int result = sqlite3_column_int(this->statement, column);
 
     if (result != 0) {
         cout << "getQuery success" << endl;
-        return std::to_string(result);
+        return result;
+        //return std::to_string(result);
     }
     else {
         cout << "getQuery error" << endl;
-        string str("");
-        return str;
+        return -1;
+        //string str("");
+        //return str;
     }
 }

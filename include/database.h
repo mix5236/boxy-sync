@@ -70,7 +70,7 @@ public:
      * \param column - Index of column (starts from 0)
      * \return - Content of column
      */
-    std::string getQueryResultPlain(int column);
+    int getQueryResultInt(int column);
 };
 
 #endif // DATABASE_H

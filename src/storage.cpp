@@ -56,6 +56,33 @@ bool Storage::readBlock(long position, char *buffer) {
         return true;
 }
 
+long Storage::deleteBlock(long position) {
+    long storage_size = this->getSize();
+    long last_block_position = storage_size - m_block_size;
+    int storage_fd = fileno(this->m_storage);
+
+    // first, check if our block is the last block of the storage
+    if (position == last_block_position) {
+        int return_code = ftruncate(storage_fd, last_block_position);
+        if (return_code == 0)
+            return -1;
+        else
+            return -2;
+    }
+
+    // if not, copy last block in it's place
+    char buffer[this->m_block_size] = {0};
+    this->readBlock(last_block_position, buffer);
+    this->rewriteBlock(position, buffer);
+
+    // and delete the last block
+    int return_code = ftruncate(storage_fd, last_block_position);
+    if (return_code == 0)
+        return last_block_position;
+    else
+        return -2;
+}
+
 long Storage::getSize() {
     struct stat stat_buf;
     int return_code = stat(this->m_storage_file_path.c_str(), &stat_buf);
