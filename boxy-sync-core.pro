@@ -13,11 +13,16 @@ LIBS += -lsqlite3
 
 SOURCES += ./src/boxysynccore.cpp \
     ./src/database.cpp \
-    ./src/storage.cpp
+    ./src/storage.cpp \
+    ./src/blocks.cpp \
+    ./src/items.cpp
 
 HEADERS += ./include/boxysynccore.h \
     ./include/database.h \
-    ./include/storage.h
+    ./include/storage.h \
+    ./include/blocks.h \
+    ./include/items.h \
+    ./include/item_struct.h
 #unix {
 #    target.path = /usr/lib
 #    INSTALLS += target

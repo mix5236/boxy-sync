@@ -41,13 +41,13 @@ public:
      * \param index - Index of parameter in query (starts from 0)
      * \param value - Data to be bound to query
      */
-    bool bindToQuery(int index, std::string value);
+    bool bindToQueryString(int index, std::string value);
     /*!
      * \brief bindToQuery - Binds parameter marked by '?' to query statement. Parameter won't be encrypted
      * \param index - Index of parameter in query (starts from 0)
      * \param value - Data to be bound to query
      */
-    bool bindToQueryPlain(int index, std::string value);
+    bool bindToQueryInt(int index, int value);
     /*!
      * \brief executeQuery - Executes prepared query statement
      * \return - Returns true on success, false on failure
